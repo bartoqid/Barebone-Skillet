@@ -12,65 +12,77 @@ labels:
 
 variables:
 
--   name: loopback_ip_address
-    description: loopback_ip_address
-    type_hint: text
-    default: ''
-
 -   name: loopback_id
-    description: loopback_id
-    type_hint: text
+    description: Loopback ID
+    type_hint: number
     default: ''
+    help_text: ''
 
--   name: gp_gw_name
-    description: gp_gw_name
-    type_hint: text
+-   name: loopback_ip_address
+    description: Loopback IP Address
+    type_hint: cidr
     default: ''
-
--   name: tunnel_interface_id
-    description: tunnel_interface_id
-    type_hint: text
-    default: ''
-
--   name: gp_gateway_name
-    description: gp_gateway_name
-    type_hint: text
-    default: ''
-
--   name: gp_loopback_ip
-    description: gp_loopback_ip
-    type_hint: text
-    default: ''
-
--   name: gw_ip_pool_cidr
-    description: gw_ip_pool_cidr
-    type_hint: text
-    default: ''
-
--   name: external_gw_fqdn
-    description: external_gw_fqdn
-    type_hint: text
-    default: ''
-
--   name: ssl_tls_profile_name
-    description: ssl_tls_profile_name
-    type_hint: text
-    default: ''
-
--   name: gp_portal_name
-    description: gp_portal_name
-    type_hint: text
-    default: ''
-
--   name: external_gw_name
-    description: external_gw_name
-    type_hint: text
-    default: ''
+    help_text: ''
 
 -   name: gp_loopback_id
-    description: gp_loopback_id
+    description: GP Loopback ID
+    type_hint: number
+    default: ''
+    help_text: ''
+
+-   name: gp_loopback_ip
+    description: GP Loopback IP
+    type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: tunnel_interface_id
+    description: Tunnel Interface ID
+    type_hint: number
+    default: ''
+    help_text: ''
+
+-   name: gp_gw_name
+    description: GP Gateway Name
     type_hint: text
     default: ''
+    help_text: ''
+
+-   name: gp_gateway_name
+    description: Gateway Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: gw_ip_pool_cidr
+    description: Gateway IP Pool CIDR
+    type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: external_gw_name
+    description: External GW Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: external_gw_fqdn
+    description: External Gateway FQDN
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: gp_portal_name
+    description: GP Portal Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: ssl_tls_profile_name
+    description: Ssl Tls Profile Name
+    type_hint: text
+    default: ''
+    help_text: ''
 
 snippets:
 
