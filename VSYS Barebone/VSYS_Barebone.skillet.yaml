@@ -1,6 +1,6 @@
 name: VSYS Barebone
 
-label: VSYS Base
+label: VSYS Barebone
 
 description: Skillet to generate base vsys and vr with BGP configs
 
