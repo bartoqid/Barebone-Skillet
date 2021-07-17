@@ -1,37 +1,105 @@
 name: Vsys GP Config Barebone
+
 label: Barebone VSYS GP Config
-description: Skillet to configure Globalprotect portal and gatewa in vsys via Panorama
+
+description: Skillet to configure Globalprotect portal and gateway in vsys via Panorama
+
 type: panorama
+
 labels:
+
     collection: Useful Skillets
-variables: []
+
+variables:
+
+-   name: loopback_ip_address
+    description: loopback_ip_address
+    type_hint: text
+    default: ''
+
+-   name: loopback_id
+    description: loopback_id
+    type_hint: text
+    default: ''
+
+-   name: gp_gw_name
+    description: gp_gw_name
+    type_hint: text
+    default: ''
+
+-   name: tunnel_interface_id
+    description: tunnel_interface_id
+    type_hint: text
+    default: ''
+
+-   name: gp_gateway_name
+    description: gp_gateway_name
+    type_hint: text
+    default: ''
+
+-   name: gp_loopback_ip
+    description: gp_loopback_ip
+    type_hint: text
+    default: ''
+
+-   name: gw_ip_pool_cidr
+    description: gw_ip_pool_cidr
+    type_hint: text
+    default: ''
+
+-   name: external_gw_fqdn
+    description: external_gw_fqdn
+    type_hint: text
+    default: ''
+
+-   name: ssl_tls_profile_name
+    description: ssl_tls_profile_name
+    type_hint: text
+    default: ''
+
+-   name: gp_portal_name
+    description: gp_portal_name
+    type_hint: text
+    default: ''
+
+-   name: external_gw_name
+    description: external_gw_name
+    type_hint: text
+    default: ''
+
+-   name: gp_loopback_id
+    description: gp_loopback_id
+    type_hint: text
+    default: ''
+
 snippets:
--   name: entry-422162
+
+-   name: GP GW Name and Interface
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/tunnel/global-protect-gateway
     element: |-
-        <entry name="GP-GW-cenet-wol-N">
+        <entry name="{{ gp_gw_name }}">
           <local-address>
-            <interface>loopback.40</interface>
+            <interface>loopback.{{ loopback_id }}</interface>
             <ip>
-              <ipv4>138.44.18.16/32</ipv4>
+              <ipv4>{{ loopback_ip_address }}</ipv4>
             </ip>
           </local-address>
-          <tunnel-interface>tunnel.4</tunnel-interface>
+          <tunnel-interface>tunnel.{{ tunnel_interface_id }}</tunnel-interface>
         </entry>
     cmd: set
-    file: ''
--   name: global-protect-512735
+
+-   name: global-protect-portal and gw config
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-wol"]
     element: |-
         <global-protect>
           <global-protect-portal>
-            <entry name="GP-Portal-cenet-wol">
+            <entry name="{{ gp_portal_name }}">
               <portal-config>
                 <local-address>
                   <ip>
-                    <ipv4>138.44.18.16/32</ipv4>
+                    <ipv4>{{ gp_loopback_ip }}</ipv4>
                   </ip>
-                  <interface>loopback.40</interface>
+                  <interface>loopback.{{ gp_loopback_id }}</interface>
                 </local-address>
                 <client-auth>
                   <entry name="Local-auth-profile">
@@ -44,7 +112,7 @@ snippets:
                     <password-label>Password</password-label>
                   </entry>
                 </client-auth>
-                <ssl-tls-service-profile>GP-cert-wol</ssl-tls-service-profile>
+                <ssl-tls-service-profile>{{ ssl_tls_profile_name }}</ssl-tls-service-profile>
                 <custom-login-page>factory-default</custom-login-page>
                 <custom-home-page>factory-default</custom-home-page>
               </portal-config>
@@ -58,8 +126,8 @@ snippets:
                     <gateways>
                       <external>
                         <list>
-                          <entry name="ext-cenet-wol">
-                            <fqdn>wol-poc.aarnet.edu.au</fqdn>
+                          <entry name="{{ external_gw_name }}">
+                            <fqdn>{{ external_gw_fqdn }}</fqdn>
                             <priority-rule>
                               <entry name="Any">
                                 <priority>1</priority>
@@ -392,7 +460,7 @@ snippets:
             </entry>
           </global-protect-portal>
           <global-protect-gateway>
-            <entry name="GP-GW-cenet-wol">
+            <entry name="{{ gp_gateway_name }}">
               <roles>
                 <entry name="default">
                   <login-lifetime>
@@ -437,7 +505,7 @@ snippets:
                     <member>any</member>
                   </source-user>
                   <ip-pool>
-                    <member>192.168.4.0/24</member>
+                    <member>{{ gw_ip_pool_cidr }}</member>
                   </ip-pool>
                   <os>
                     <member>any</member>
@@ -446,11 +514,11 @@ snippets:
                   <no-direct-access-to-local-network>no</no-direct-access-to-local-network>
                 </entry>
               </remote-user-tunnel-configs>
-              <ssl-tls-service-profile>GP-cert-wol</ssl-tls-service-profile>
+              <ssl-tls-service-profile>{{ ssl_tls_profile_name }}</ssl-tls-service-profile>
               <tunnel-mode>yes</tunnel-mode>
-              <remote-user-tunnel>tunnel.4</remote-user-tunnel>
+              <remote-user-tunnel>tunnel.{{ tunnel_interface_id }}</remote-user-tunnel>
             </entry>
           </global-protect-gateway>
         </global-protect>
     cmd: set
-    file: ''
+
