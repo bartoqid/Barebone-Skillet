@@ -12,120 +12,143 @@ labels:
 
 variables:
 
--   name: inside_interface_comment
-    description: Undeclared Variable
-    type_hint: text
+-   name: outside_tag_id
+    description: Outside Interface VLAN Tag
+    type_hint: number
     default: ''
+    help_text: ''
 
 -   name: outside_interface_ip
-    description: Undeclared Variable
-    type_hint: text
+    description: Outside Interface IP Address
+    type_hint: cidr
     default: ''
-
--   name: peer_group_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: export_rule_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: static_route_destination
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: bgp_router_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: outside_tag_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: export_bgp_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: tunnel_interface_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: vr_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: igw_loopback_tag
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: inside_interface_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: static_route_next_hop
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: ssl_tls_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: gp_loopback_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
+    help_text: ''
 
 -   name: outside_interface_comment
     description: Undeclared Variable
     type_hint: text
-    default: ''
-
--   name: gp_loopback_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: igw_loopback_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: vsys_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
+    default: Outside Interface Comment
+    help_text: ''
 
 -   name: inside_interface_tag
-    description: Undeclared Variable
-    type_hint: text
+    description: Inside Interface VLAN Tag
+    type_hint: number
     default: ''
+    help_text: ''
 
--   name: tunnel_interface_comment
-    description: Undeclared Variable
-    type_hint: text
+-   name: inside_interface_ip
+    description: Inside Interface IP Address
+    type_hint: cidr
     default: ''
+    help_text: ''
 
--   name: bgp_peer_ip_address
-    description: Undeclared Variable
+-   name: inside_interface_comment
+    description: Inside Interface Comment
     type_hint: text
     default: ''
+    help_text: ''
+
+-   name: gp_loopback_id
+    description: GP Loopback ID
+    type_hint: number
+    default: ''
+    help_text: ''
+
+-   name: gp_loopback_ip
+    description: GP Loopback IP Address
+    type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: igw_loopback_tag
+    description: Internal GW Loopback ID
+    type_hint: number
+    default: ''
+    help_text: ''
+
+-   name: igw_loopback_ip
+    description: Internal GW Loopback IP Address
+    type_hint: cidr
+    default: ''
+    help_text: ''
 
 -   name: gp_loopback_comment
-    description: Undeclared Variable
+    description: GP Loopback Comment
     type_hint: text
     default: ''
+    help_text: ''
+
+-   name: tunnel_interface_id
+    description: Tunnel Interface ID
+    type_hint: number
+    default: ''
+    help_text: ''
+
+-   name: tunnel_interface_comment
+    description: Tunnel Interface Comment
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: vsys_name
+    description: VSYS Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: vr_name
+    description: Virtual Router Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: bgp_router_id
+    description: BGP Router ID
+    type_hint: ip_address
+    default: ''
+    help_text: ''
+
+-   name: peer_group_name
+    description: BGP Peer Group Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: bgp_peer_ip_address
+    description: BGP Peer IP Address
+    type_hint: ip_address
+    default: ''
+    help_text: ''
+
+-   name: export_rule_name
+    description: BGP Export Rule Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: export_bgp_ip
+    description: BGP Export IP Address
+    type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: static_route_destination
+    description: Static Route Destination IP
+    type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: static_route_next_hop
+    description: Static Route Next Hop IP Address
+    type_hint: ip_address
+    default: ''
+    help_text: ''
+
+-   name: ssl_tls_name
+    description: SSL TLS Profile Name
+    type_hint: text
+    default: ''
+    help_text: ''
 
 snippets:
 
