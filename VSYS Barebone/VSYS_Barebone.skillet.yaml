@@ -2,7 +2,7 @@ name: VSYS Barebone
 
 label: VSYS Base
 
-description: Skillet Generated from uploaded configs
+description: Skillet to generate base vsys and vr with BGP configs
 
 type: panorama
 
