@@ -12,18 +12,6 @@ labels:
 
 variables:
 
--   name: loopback_id
-    description: Loopback ID
-    type_hint: number
-    default: ''
-    help_text: ''
-
--   name: loopback_ip_address
-    description: Loopback IP Address
-    type_hint: cidr
-    default: ''
-    help_text: ''
-
 -   name: gp_loopback_id
     description: GP Loopback ID
     type_hint: number
@@ -48,12 +36,6 @@ variables:
     default: ''
     help_text: ''
 
--   name: gp_gateway_name
-    description: Gateway Name
-    type_hint: text
-    default: ''
-    help_text: ''
-
 -   name: gw_ip_pool_cidr
     description: Gateway IP Pool CIDR
     type_hint: cidr
@@ -61,13 +43,13 @@ variables:
     help_text: ''
 
 -   name: external_gw_name
-    description: External GW Name
+    description: External GW Name as shown in GP Client
     type_hint: text
     default: ''
     help_text: ''
 
 -   name: external_gw_fqdn
-    description: External Gateway FQDN
+    description: External Gateway FQDN (Actual GW IP or FQDN)
     type_hint: text
     default: ''
     help_text: ''
@@ -91,9 +73,9 @@ snippets:
     element: |-
         <entry name="{{ gp_gw_name }}">
           <local-address>
-            <interface>loopback.{{ loopback_id }}</interface>
+            <interface>loopback.{{ gp_loopback_id }}</interface>
             <ip>
-              <ipv4>{{ loopback_ip_address }}</ipv4>
+              <ipv4>{{ gp_loopback_ip }}</ipv4>
             </ip>
           </local-address>
           <tunnel-interface>tunnel.{{ tunnel_interface_id }}</tunnel-interface>
@@ -472,7 +454,7 @@ snippets:
             </entry>
           </global-protect-portal>
           <global-protect-gateway>
-            <entry name="{{ gp_gateway_name }}">
+            <entry name="{{ gp_gw_name }}">
               <roles>
                 <entry name="default">
                   <login-lifetime>
