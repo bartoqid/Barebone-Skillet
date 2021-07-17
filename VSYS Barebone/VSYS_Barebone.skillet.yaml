@@ -1,134 +1,11 @@
 name: VSYS Barebone
-
 label: VSYS Base
-
-description: Skillet to build VSYS and VR
-
+description: Skillet Generated from uploaded configs
 type: panorama
-
 labels:
-
-    collection: Barebone
-
-variables:
-
--   name: inside_interface_comment
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: outside_interface_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: peer_group_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: export_rule_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: static_route_destination
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: bgp_router_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: outside_tag_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: export_bgp_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: tunnel_interface_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: vr_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: igw_loopback_tag
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: inside_interface_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: static_route_next_hop
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: ssl_tls_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: gp_loopback_id
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: outside_interface_comment
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: gp_loopback_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: igw_loopback_ip
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: vsys_name
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: inside_interface_tag
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: tunnel_interface_comment
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: bgp_peer_ip_address
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
--   name: gp_loopback_comment
-    description: Undeclared Variable
-    type_hint: text
-    default: ''
-
+    collection: Useful Skillets
+variables: []
 snippets:
-
 -   name: Outside Interface
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/ethernet/entry[@name="ethernet1/5"]/layer3/units
     element: |-
@@ -140,7 +17,7 @@ snippets:
           </ip>
         </entry>
     cmd: set
-
+    file: ''
 -   name: Inside Interface
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/ethernet/entry[@name="ethernet1/6"]/layer3/units
     element: |-
@@ -152,7 +29,7 @@ snippets:
           </ip>
         </entry>
     cmd: set
-
+    file: ''
 -   name: Loopback Interface
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/loopback/units
     element: |-
@@ -166,7 +43,7 @@ snippets:
           <comment>{{ gp_loopback_comment }}</comment>
         </entry>
     cmd: set
-
+    file: ''
 -   name: iGW Loopback
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/loopback/units
     element: |-
@@ -180,7 +57,7 @@ snippets:
           <comment>{{ gp_loopback_comment }}</comment>
         </entry>
     cmd: set
-
+    file: ''
 -   name: tunnel interface
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/tunnel/units
     element: |-
@@ -188,7 +65,7 @@ snippets:
           <comment>{{ tunnel_interface_comment }}</comment>
         </entry>
     cmd: set
-
+    file: ''
 -   name: VR and BGP
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/virtual-router
     element: |-
@@ -406,7 +283,7 @@ snippets:
           </routing-table>
         </entry>
     cmd: set
-
+    file: ''
 -   name: 'Vsys '
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys
     element: |-
@@ -481,4 +358,4 @@ snippets:
           </ssl-tls-service-profile>
         </entry>
     cmd: set
-
+    file: ''
