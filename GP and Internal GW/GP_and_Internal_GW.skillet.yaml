@@ -93,7 +93,7 @@ snippets:
         </authentication-profile>
     cmd: set
 
--   name: global-protect-601031
+-   name: GP-Portal
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
         <global-protect>
@@ -416,7 +416,7 @@ snippets:
                         </entry>
                         <entry name="mfa-listening-port">
                           <value>
-                            <member>451</member>
+                            <member>4501</member>
                           </value>
                         </entry>
                         <entry name="mfa-notification-msg">
