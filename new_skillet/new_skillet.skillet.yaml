@@ -1,0 +1,6 @@
+name: new_skillet
+label: My New Skillet
+description: This is what my new skillet does
+type: panos
+variables: []
+snippets: []
