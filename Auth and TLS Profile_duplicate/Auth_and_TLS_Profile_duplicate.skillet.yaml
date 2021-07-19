@@ -1,12 +1,21 @@
 name: Auth and TLS Profile_duplicate
+
 label: Auth and TLS Profile-test
+
 description: Skillet Generated from 192.168.254.2 using running-config.xml and Candidate
+
     Config
+
 type: panos
+
 labels:
+
     collection: Unknown
+
 variables: []
+
 snippets:
+
 -   name: entry-146257
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-wol"]/ssl-tls-service-profile
     element: |-
@@ -17,6 +26,8 @@ snippets:
           </protocol-settings>
           <certificate>GP-placeholder</certificate>
         </entry>
+    cmd: set
+
 -   name: authentication-profile-417358
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/shared
     element: |-
@@ -33,3 +44,5 @@ snippets:
             </allow-list>
           </entry>
         </authentication-profile>
+    cmd: set
+
