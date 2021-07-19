@@ -156,6 +156,12 @@ variables:
     default: ''
     help_text: ''
 
+-   name: List
+    type_hint: list
+    description: Test list
+    default: default value
+    help_text: ''
+
 snippets:
 
 -   name: Outside Interface
