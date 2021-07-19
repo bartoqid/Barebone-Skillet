@@ -434,7 +434,7 @@ snippets:
     element: |-
         <entry name="ethernet1/5.{{ outside_tag_id }}">
           <tag>{{ outside_tag_id }}</tag>
-          <comment>{{ outside_interface_comment }}</comment>
+          <comment>{{ vsys_name }}-outside</comment>
           <ip>
             <entry name="{{ outside_interface_ip }}"/>
           </ip>
@@ -446,7 +446,7 @@ snippets:
     element: |-
         <entry name="ethernet1/6.{{ inside_interface_tag }}">
           <tag>{{ inside_interface_tag }}</tag>
-          <comment>{{ inside_interface_comment }}</comment>
+          <comment>{{ vsys_name }}-inside</comment>
           <ip>
             <entry name="{{ inside_interface_ip }}"/>
           </ip>
@@ -463,7 +463,7 @@ snippets:
           <ip>
             <entry name="{{ gp_loopback_ip }}"/>
           </ip>
-          <comment>{{ gp_loopback_comment }}</comment>
+          <comment>{{ vsys_name }}-loopback-ext-gw</comment>
         </entry>
     cmd: set
 
@@ -477,7 +477,7 @@ snippets:
           <ip>
             <entry name="{{ igw_loopback_ip }}"/>
           </ip>
-          <comment>{{ igw_loopback_comment }}</comment>
+          <comment>{{ vsys_name }}-loopback-int-gw</comment>
         </entry>
     cmd: set
 
@@ -485,7 +485,7 @@ snippets:
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/tunnel/units
     element: |-
         <entry name="tunnel.{{ tunnel_interface_id }}">
-          <comment>{{ tunnel_interface_comment }}</comment>
+          <comment>{{ vsys_name }}-tunnel</comment>
         </entry>
     cmd: set
 
