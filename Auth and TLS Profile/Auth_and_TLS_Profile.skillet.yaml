@@ -1,0 +1,32 @@
+name: Auth and TLS Profile
+label: Auth and TLS Profile
+description: Auth and TLS Profile
+type: panos
+labels:
+    collection: Unknown
+variables: []
+snippets:
+-   name: entry-675872
+    xpath: /config/shared/ssl-tls-service-profile
+    element: |-
+        <entry name="ssl-tls-profile">
+          <protocol-settings>
+            <min-version>tls1-0</min-version>
+            <max-version>max</max-version>
+          </protocol-settings>
+          <certificate>GPPA200-CA</certificate>
+        </entry>
+-   name: entry-873779
+    xpath: /config/shared/authentication-profile
+    element: |-
+        <entry name="Local-Auth">
+          <method>
+            <local-database/>
+          </method>
+          <multi-factor-auth>
+            <mfa-enable>no</mfa-enable>
+          </multi-factor-auth>
+          <allow-list>
+            <member>all</member>
+          </allow-list>
+        </entry>
