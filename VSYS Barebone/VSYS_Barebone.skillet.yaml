@@ -12,6 +12,12 @@ labels:
 
 variables:
 
+-   name: vsys_name
+    description: VSYS Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
 -   name: outside_tag_id
     description: Outside Interface VLAN Tag
     type_hint: number
@@ -22,12 +28,6 @@ variables:
     description: Outside Interface IP Address
     type_hint: cidr
     default: ''
-    help_text: ''
-
--   name: outside_interface_comment
-    description: Undeclared Variable
-    type_hint: text
-    default: Outside Interface Comment
     help_text: ''
 
 -   name: inside_interface_tag
@@ -42,27 +42,15 @@ variables:
     default: ''
     help_text: ''
 
--   name: inside_interface_comment
-    description: Inside Interface Comment
-    type_hint: text
-    default: ''
-    help_text: ''
-
 -   name: gp_loopback_id
-    description: GP Loopback ID
+    description: External GP Loopback ID
     type_hint: number
     default: ''
     help_text: ''
 
 -   name: gp_loopback_ip
-    description: GP Loopback IP Address
+    description: External GP Loopback IP Address
     type_hint: cidr
-    default: ''
-    help_text: ''
-
--   name: gp_loopback_comment
-    description: GP Loopback Comment
-    type_hint: text
     default: ''
     help_text: ''
 
@@ -78,45 +66,15 @@ variables:
     default: ''
     help_text: ''
 
--   name: igw_loopback_comment
-    description: iGW Loopback Comment
-    type_hint: text
-    default: ''
-    help_text: ''
-
 -   name: tunnel_interface_id
     description: Tunnel Interface ID
     type_hint: number
     default: ''
     help_text: ''
 
--   name: tunnel_interface_comment
-    description: Tunnel Interface Comment
-    type_hint: text
-    default: ''
-    help_text: ''
-
--   name: vsys_name
-    description: VSYS Name
-    type_hint: text
-    default: ''
-    help_text: ''
-
--   name: vr_name
-    description: Virtual Router Name
-    type_hint: text
-    default: ''
-    help_text: ''
-
 -   name: bgp_router_id
     description: BGP Router ID
     type_hint: ip_address
-    default: ''
-    help_text: ''
-
--   name: peer_group_name
-    description: BGP Peer Group Name
-    type_hint: text
     default: ''
     help_text: ''
 
@@ -150,78 +108,65 @@ variables:
     default: ''
     help_text: ''
 
--   name: ssl_tls_name
-    description: SSL TLS Profile Name
-    type_hint: text
-    default: ''
-    help_text: ''
-
 snippets:
 
--   name: Outside Interface
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/ethernet/entry[@name="ethernet1/5"]/layer3/units
+-   name: 'Vsys '
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys
     element: |-
-        <entry name="ethernet1/5.{{ outside_tag_id }}">
-          <tag>{{ outside_tag_id }}</tag>
-          <comment>{{ outside_interface_comment }}</comment>
-          <ip>
-            <entry name="{{ outside_interface_ip }}"/>
-          </ip>
-        </entry>
-    cmd: set
-
--   name: Inside Interface
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/ethernet/entry[@name="ethernet1/6"]/layer3/units
-    element: |-
-        <entry name="ethernet1/6.{{ inside_interface_tag }}">
-          <tag>{{ inside_interface_tag }}</tag>
-          <comment>{{ inside_interface_comment }}</comment>
-          <ip>
-            <entry name="{{ inside_interface_ip }}"/>
-          </ip>
-        </entry>
-    cmd: set
-
--   name: Loopback Interface
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/loopback/units
-    element: |-
-        <entry name="loopback.{{ gp_loopback_id }}">
-          <adjust-tcp-mss>
-            <enable>no</enable>
-          </adjust-tcp-mss>
-          <ip>
-            <entry name="{{ gp_loopback_ip }}"/>
-          </ip>
-          <comment>{{ gp_loopback_comment }}</comment>
-        </entry>
-    cmd: set
-
--   name: iGW Loopback
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/loopback/units
-    element: |-
-        <entry name="loopback.{{ igw_loopback_tag }}">
-          <adjust-tcp-mss>
-            <enable>no</enable>
-          </adjust-tcp-mss>
-          <ip>
-            <entry name="{{ igw_loopback_ip }}"/>
-          </ip>
-          <comment>{{ igw_loopback_comment }}</comment>
-        </entry>
-    cmd: set
-
--   name: tunnel interface
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/tunnel/units
-    element: |-
-        <entry name="tunnel.{{ tunnel_interface_id }}">
-          <comment>{{ tunnel_interface_comment }}</comment>
+        <entry name="vsys-{{ vsys_name }}">
+          <import>
+            <network>
+              <interface>
+                <member>ethernet1/5.{{ outside_tag_id }}</member>
+                <member>ethernet1/6.{{ inside_interface_tag }}</member>
+                <member>loopback.{{ gp_loopback_id }}</member>
+                <member>loopback.{{ igw_loopback_tag }}</member>
+                <member>tunnel.{{ tunnel_interface_id }}</member>
+              </interface>
+              <virtual-router>
+                <member>vsys-{{ vsys_name }}-vr</member>
+              </virtual-router>
+            </network>
+          </import>
+          <zone>
+            <entry name="OUTSIDE">
+              <network>
+                <layer3>
+                  <member>ethernet1/5.{{ outside_tag_id }}</member>
+                </layer3>
+              </network>
+            </entry>
+            <entry name="INSIDE">
+              <network>
+                <layer3>
+                  <member>ethernet1/6.{{ inside_interface_tag }}</member>
+                  <member>loopback.{{ igw_loopback_tag }}</member>
+                </layer3>
+              </network>
+            </entry>
+            <entry name="GP">
+              <network>
+                <layer3>
+                  <member>loopback.{{ gp_loopback_id }}</member>
+                </layer3>
+              </network>
+            </entry>
+            <entry name="VPN-USERS">
+              <network>
+                <layer3>
+                  <member>tunnel.{{ tunnel_interface_id }}</member>
+                </layer3>
+              </network>
+              <enable-user-identification>yes</enable-user-identification>
+            </entry>
+          </zone>
         </entry>
     cmd: set
 
 -   name: VR and BGP
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/virtual-router
     element: |-
-        <entry name="{{ vr_name }}">
+        <entry name="vsys-{{ vsys_name }}-vr">
           <interface>
             <member>ethernet1/5.{{ outside_tag_id }}</member>
             <member>ethernet1/6.{{ inside_interface_tag }}</member>
@@ -242,7 +187,7 @@ snippets:
               <enable>yes</enable>
               <install-route>yes</install-route>
               <peer-group>
-                <entry name="{{ peer_group_name }}">
+                <entry name="vsys-{{ vsys_name }}-peer">
                   <type>
                     <ibgp>
                       <export-nexthop>original</export-nexthop>
@@ -322,7 +267,7 @@ snippets:
                         <route-table>unicast</route-table>
                       </match>
                       <used-by>
-                        <member>{{ peer_group_name }}</member>
+                        <member>vsys-{{ vsys_name }}-peer</member>
                       </used-by>
                       <enable>yes</enable>
                     </entry>
@@ -339,7 +284,7 @@ snippets:
                         <route-table>unicast</route-table>
                       </match>
                       <used-by>
-                        <member>{{ peer_group_name }}</member>
+                        <member>vsys-{{ vsys_name }}-peer</member>
                       </used-by>
                       <enable>yes</enable>
                     </entry>
@@ -375,7 +320,7 @@ snippets:
                         <route-table>unicast</route-table>
                       </match>
                       <used-by>
-                        <member>{{ peer_group_name }}</member>
+                        <member>vsys-{{ vsys_name }}-peer</member>
                       </used-by>
                       <enable>yes</enable>
                     </entry>
@@ -392,7 +337,7 @@ snippets:
                         <route-table>unicast</route-table>
                       </match>
                       <used-by>
-                        <member>{{ peer_group_name }}</member>
+                        <member>vsys-{{ vsys_name }}-peer</member>
                       </used-by>
                       <enable>yes</enable>
                     </entry>
@@ -416,7 +361,7 @@ snippets:
           <routing-table>
             <ip>
               <static-route>
-                <entry name="{{ inside_interface_comment }}">
+                <entry name="{{ vsys_name }}-local">
                   <nexthop>
                     <ip-address>{{ static_route_next_hop }}</ip-address>
                   </nexthop>
@@ -436,78 +381,63 @@ snippets:
         </entry>
     cmd: set
 
--   name: 'Vsys '
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys
+-   name: Outside Interface
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/ethernet/entry[@name="ethernet1/5"]/layer3/units
     element: |-
-        <entry name="{{ vsys_name }}">
-          <import>
-            <network>
-              <interface>
-                <member>ethernet1/5.{{ outside_tag_id }}</member>
-                <member>ethernet1/6.{{ inside_interface_tag }}</member>
-                <member>loopback.{{ gp_loopback_id }}</member>
-                <member>loopback.{{ igw_loopback_tag }}</member>
-                <member>tunnel.{{ tunnel_interface_id }}</member>
-              </interface>
-              <virtual-router>
-                <member>{{ vr_name }}</member>
-              </virtual-router>
-            </network>
-          </import>
-          <zone>
-            <entry name="OUTSIDE">
-              <network>
-                <layer3>
-                  <member>ethernet1/5.{{ outside_tag_id }}</member>
-                </layer3>
-              </network>
-            </entry>
-            <entry name="INSIDE">
-              <network>
-                <layer3>
-                  <member>ethernet1/6.{{ inside_interface_tag }}</member>
-                  <member>loopback.{{ igw_loopback_tag }}</member>
-                </layer3>
-              </network>
-            </entry>
-            <entry name="GP">
-              <network>
-                <layer3>
-                  <member>loopback.{{ gp_loopback_id }}</member>
-                </layer3>
-              </network>
-            </entry>
-            <entry name="VPN-USERS">
-              <network>
-                <layer3>
-                  <member>tunnel.{{ tunnel_interface_id }}</member>
-                </layer3>
-              </network>
-              <enable-user-identification>yes</enable-user-identification>
-            </entry>
-          </zone>
-          <authentication-profile>
-            <entry name="Local-Auth">
-              <multi-factor-auth>
-                <mfa-enable>no</mfa-enable>
-              </multi-factor-auth>
-              <method>
-                <local-database/>
-              </method>
-              <allow-list>
-                <member>all</member>
-              </allow-list>
-            </entry>
-          </authentication-profile>
-          <ssl-tls-service-profile>
-            <entry name="{{ ssl_tls_name }}">
-              <certificate>GP-placeholder</certificate>
-              <protocol-settings>
-                <min-version>tls1-0</min-version>
-                <max-version>max</max-version>
-              </protocol-settings>
-            </entry>
-          </ssl-tls-service-profile>
+        <entry name="ethernet1/5.{{ outside_tag_id }}">
+          <tag>{{ outside_tag_id }}</tag>
+          <comment>{{ vsys_name }}-outside</comment>
+          <ip>
+            <entry name="{{ outside_interface_ip }}"/>
+          </ip>
+        </entry>
+    cmd: set
+
+-   name: Inside Interface
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/ethernet/entry[@name="ethernet1/6"]/layer3/units
+    element: |-
+        <entry name="ethernet1/6.{{ inside_interface_tag }}">
+          <tag>{{ inside_interface_tag }}</tag>
+          <comment>{{ vsys_name }}-inside</comment>
+          <ip>
+            <entry name="{{ inside_interface_ip }}"/>
+          </ip>
+        </entry>
+    cmd: set
+
+-   name: Loopback Interface
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/loopback/units
+    element: |-
+        <entry name="loopback.{{ gp_loopback_id }}">
+          <adjust-tcp-mss>
+            <enable>no</enable>
+          </adjust-tcp-mss>
+          <ip>
+            <entry name="{{ gp_loopback_ip }}"/>
+          </ip>
+          <comment>{{ vsys_name }}-loopback-ext-gw</comment>
+        </entry>
+    cmd: set
+
+-   name: iGW Loopback
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/loopback/units
+    element: |-
+        <entry name="loopback.{{ igw_loopback_tag }}">
+          <adjust-tcp-mss>
+            <enable>no</enable>
+          </adjust-tcp-mss>
+          <ip>
+            <entry name="{{ igw_loopback_ip }}"/>
+          </ip>
+          <comment>{{ vsys_name }}-loopback-int-gw</comment>
+        </entry>
+    cmd: set
+
+-   name: tunnel interface
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/interface/tunnel/units
+    element: |-
+        <entry name="tunnel.{{ tunnel_interface_id }}">
+          <comment>{{ vsys_name }}-tunnel</comment>
         </entry>
     cmd: set
 
