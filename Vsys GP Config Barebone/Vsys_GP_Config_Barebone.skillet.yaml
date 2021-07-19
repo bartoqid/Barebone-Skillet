@@ -42,12 +42,6 @@ variables:
     default: ''
     help_text: ''
 
--   name: ssl_tls_profile_name
-    description: Ssl Tls Profile Name
-    type_hint: text
-    default: ''
-    help_text: ''
-
 snippets:
 
 -   name: GP GW Name and Interface
