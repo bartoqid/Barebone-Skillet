@@ -1,0 +1,9 @@
+name: List test
+label: Test
+description: "Long form description of the purpose and function of this Skillet.\r\
+    \n"
+type: template
+labels:
+    collection: Unknown
+variables: []
+snippets: []
