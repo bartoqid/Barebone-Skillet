@@ -1,0 +1,67 @@
+name: List test new
+label: List test new
+description: Skillet Generated from 192.168.1.2 using running-config.xml and Candidate
+    Config
+type: panos
+labels:
+    collection: Unknown
+variables: []
+snippets:
+-   name: path-monitor-358237
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="Partner"]
+    element: |-
+        <path-monitor>
+          <enable>no</enable>
+          <failure-condition>any</failure-condition>
+          <hold-time>2</hold-time>
+        </path-monitor>
+-   name: nexthop-505569
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="Partner"]
+    element: |-
+        <nexthop>
+          <ip-address>10.5.2.1</ip-address>
+        </nexthop>
+-   name: path-monitor-354223
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="BGP1"]
+    element: |-
+        <path-monitor>
+          <enable>no</enable>
+          <failure-condition>any</failure-condition>
+          <hold-time>2</hold-time>
+        </path-monitor>
+-   name: nexthop-846526
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="BGP1"]
+    element: |-
+        <nexthop>
+          <ip-address>10.0.0.2</ip-address>
+        </nexthop>
+-   name: path-monitor-619344
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="BGP2"]
+    element: |-
+        <path-monitor>
+          <enable>no</enable>
+          <failure-condition>any</failure-condition>
+          <hold-time>2</hold-time>
+        </path-monitor>
+-   name: nexthop-754781
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="BGP2"]
+    element: |-
+        <nexthop>
+          <ip-address>10.0.1.2</ip-address>
+        </nexthop>
+-   name: path-monitor-346734
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="BGP3"]
+    element: |-
+        <path-monitor>
+          <enable>no</enable>
+          <failure-condition>any</failure-condition>
+          <hold-time>2</hold-time>
+        </path-monitor>
+-   name: path-monitor-410484
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="VR1"]/routing-table/ip/static-route/entry[@name="BGP4"]
+    element: |-
+        <path-monitor>
+          <enable>no</enable>
+          <failure-condition>any</failure-condition>
+          <hold-time>2</hold-time>
+        </path-monitor>
