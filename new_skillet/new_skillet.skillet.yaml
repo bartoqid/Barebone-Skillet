@@ -1,6 +1,22 @@
 name: new_skillet
+
 label: My New Skillet
+
 description: This is what my new skillet does
+
 type: panos
-variables: []
+
+variables:
+
+-   name: new_list
+    type_hint: list
+    description: Human Readable Label
+    default: default value
+    help_text: ''
+
 snippets: []
+
+labels:
+
+    collection: Unknown
+
