@@ -12,6 +12,12 @@ labels:
 
 variables:
 
+-   name: vsys_name
+    description: VSYS Name
+    type_hint: text
+    default: ''
+    help_text: ''
+
 -   name: ext_gp_loopback_id
     description: ext_gp_loopback_id
     type_hint: text
@@ -19,11 +25,6 @@ variables:
 
 -   name: ext_gw_loopback_ip
     description: ext_gw_loopback_ip
-    type_hint: text
-    default: ''
-
--   name: vsys_name
-    description: vsys_name
     type_hint: text
     default: ''
 
