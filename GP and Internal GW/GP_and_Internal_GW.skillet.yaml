@@ -10,19 +10,39 @@ labels:
 
     collection: Useful Skillets
 
-variables: []
+variables:
+
+-   name: ext_gp_loopback_id
+    description: ext_gp_loopback_id
+    type_hint: text
+    default: ''
+
+-   name: ext_gw_loopback_ip
+    description: ext_gw_loopback_ip
+    type_hint: text
+    default: ''
+
+-   name: vsys_name
+    description: vsys_name
+    type_hint: text
+    default: ''
+
+-   name: tunnel_interface_id
+    description: tunnel_interface_id
+    type_hint: text
+    default: ''
 
 snippets:
 
--   name: entry-517553
+-   name: GP-gateway-config
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/tunnel/global-protect-gateway
     element: |-
-        <entry name="dbb-ext-gateway-N">
+        <entry name="{{ vsys_name }}-ext-gateway-N">
           <local-address>
             <ip>
-              <ipv4>138.44.18.32/32</ipv4>
+              <ipv4>{{ ext_gw_loopback_ip }}</ipv4>
             </ip>
-            <interface>loopback.50</interface>
+            <interface>loopback.{{ ext_gp_loopback_id }}</interface>
             <ip-address-family>ipv4</ip-address-family>
           </local-address>
           <client>
@@ -37,7 +57,7 @@ snippets:
             </third-party-client>
           </ipsec>
           <ip-pool/>
-          <tunnel-interface>tunnel.5</tunnel-interface>
+          <tunnel-interface>tunnel.{{ tunnel_interface_id }}</tunnel-interface>
         </entry>
     cmd: set
 
@@ -45,7 +65,7 @@ snippets:
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
         <ssl-tls-service-profile>
-          <entry name="dbb-tls-prof">
+          <entry name="{{ vsys_name }}-tls-prof">
             <protocol-settings>
               <min-version>tls1-0</min-version>
               <max-version>max</max-version>
@@ -59,7 +79,7 @@ snippets:
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
         <authentication-profile>
-          <entry name="dbb-auth-prof">
+          <entry name="{{ vsys_name }}-auth-prof">
             <multi-factor-auth>
               <mfa-enable>no</mfa-enable>
             </multi-factor-auth>
@@ -78,19 +98,19 @@ snippets:
     element: |-
         <global-protect>
           <global-protect-portal>
-            <entry name="dbb-portal">
+            <entry name="{{ vsys_name }}-portal">
               <portal-config>
                 <local-address>
                   <ip>
-                    <ipv4>138.44.18.32/32</ipv4>
+                    <ipv4>{{ ext_gw_loopback_ip }}</ipv4>
                   </ip>
-                  <interface>loopback.50</interface>
+                  <interface>loopback.{{ ext_gp_loopback_id }}</interface>
                 </local-address>
                 <client-auth>
                   <entry name="client-auth">
                     <user-credential-or-client-cert-required>yes</user-credential-or-client-cert-required>
                     <os>Any</os>
-                    <authentication-profile>dbb-auth-prof</authentication-profile>
+                    <authentication-profile>{{ vsys_name }}-auth-prof</authentication-profile>
                     <authentication-message>Enter login credentials</authentication-message>
                     <auto-retrieve-passcode>no</auto-retrieve-passcode>
                     <username-label>Username</username-label>
@@ -99,7 +119,7 @@ snippets:
                 </client-auth>
                 <custom-login-page>factory-default</custom-login-page>
                 <custom-home-page>factory-default</custom-home-page>
-                <ssl-tls-service-profile>dbb-tls-prof</ssl-tls-service-profile>
+                <ssl-tls-service-profile>{{ vsys_name }}-tls-prof</ssl-tls-service-profile>
               </portal-config>
               <client-config>
                 <configs>
@@ -226,7 +246,7 @@ snippets:
                         </entry>
                         <entry name="traffic-blocking-notification-msg">
                           <value>
-                            <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Notice&lt;/h1&gt;&lt;p style="margin: 0;font-size: 15px; line-height: 1.2em;"&gt;To access the network, you must first connect to GlobalProtect.&lt;/p&gt;&lt;/div&gt;</member>
+                            <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Notice&lt;/h1&gt;&lt;p style="margin: 0;font-size: 1{{ tunnel_interface_id }}px; line-height: 1.2em;"&gt;To access the network, you must first connect to GlobalProtect.&lt;/p&gt;&lt;/div&gt;</member>
                           </value>
                         </entry>
                         <entry name="allow-traffic-blocking-notification-dismissal">
@@ -241,7 +261,7 @@ snippets:
                         </entry>
                         <entry name="captive-portal-detection-msg">
                           <value>
-                            <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Captive Portal Detected&lt;/h1&gt;&lt;p style="margin: 0; font-size: 15px; line-height: 1.2em;"&gt;GlobalProtect has temporarily permitted network access for you to connect to the Internet. Follow instructions from your internet provider.&lt;/p&gt;&lt;p style="margin: 0; font-size: 15px; line-height: 1.2em;"&gt;If you let the connection time out, open GlobalProtect and click Connect to try again.&lt;/p&gt;&lt;/div&gt;</member>
+                            <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Captive Portal Detected&lt;/h1&gt;&lt;p style="margin: 0; font-size: 1{{ tunnel_interface_id }}px; line-height: 1.2em;"&gt;GlobalProtect has temporarily permitted network access for you to connect to the Internet. Follow instructions from your internet provider.&lt;/p&gt;&lt;p style="margin: 0; font-size: 15px; line-height: 1.2em;"&gt;If you let the connection time out, open GlobalProtect and click Connect to try again.&lt;/p&gt;&lt;/div&gt;</member>
                           </value>
                         </entry>
                         <entry name="captive-portal-notification-delay">
@@ -396,7 +416,7 @@ snippets:
                         </entry>
                         <entry name="mfa-listening-port">
                           <value>
-                            <member>4501</member>
+                            <member>451</member>
                           </value>
                         </entry>
                         <entry name="mfa-notification-msg">
@@ -463,7 +483,7 @@ snippets:
             </entry>
           </global-protect-portal>
           <global-protect-gateway>
-            <entry name="dbb-ext-gateway">
+            <entry name="{{ vsys_name }}-ext-gateway">
               <roles>
                 <entry name="default">
                   <login-lifetime>
@@ -480,7 +500,7 @@ snippets:
               <client-auth>
                 <entry name="client-auth">
                   <os>Any</os>
-                  <authentication-profile>dbb-auth-prof</authentication-profile>
+                  <authentication-profile>{{ vsys_name }}-auth-prof</authentication-profile>
                   <authentication-message>Enter login credentials</authentication-message>
                   <user-credential-or-client-cert-required>yes</user-credential-or-client-cert-required>
                   <auto-retrieve-passcode>no</auto-retrieve-passcode>
@@ -528,11 +548,11 @@ snippets:
                   <no-direct-access-to-local-network>no</no-direct-access-to-local-network>
                 </entry>
               </remote-user-tunnel-configs>
-              <ssl-tls-service-profile>dbb-tls-prof</ssl-tls-service-profile>
+              <ssl-tls-service-profile>{{ vsys_name }}-tls-prof</ssl-tls-service-profile>
               <tunnel-mode>yes</tunnel-mode>
-              <remote-user-tunnel>tunnel.5</remote-user-tunnel>
+              <remote-user-tunnel>tunnel.{{ tunnel_interface_id }}</remote-user-tunnel>
             </entry>
-            <entry name="dbb-int-gateway">
+            <entry name="{{ vsys_name }}-int-gateway">
               <roles>
                 <entry name="default">
                   <login-lifetime>
@@ -550,12 +570,12 @@ snippets:
                 <ip>
                   <ipv4>138.44.18.33/32</ipv4>
                 </ip>
-                <interface>loopback.51</interface>
+                <interface>loopback.{{ tunnel_interface_id }}1</interface>
               </local-address>
               <client-auth>
                 <entry name="client-auth">
                   <os>Any</os>
-                  <authentication-profile>dbb-auth-prof</authentication-profile>
+                  <authentication-profile>{{ vsys_name }}-auth-prof</authentication-profile>
                   <authentication-message>Enter login credentials</authentication-message>
                   <user-credential-or-client-cert-required>yes</user-credential-or-client-cert-required>
                   <auto-retrieve-passcode>no</auto-retrieve-passcode>
@@ -563,7 +583,7 @@ snippets:
                   <password-label>Password</password-label>
                 </entry>
               </client-auth>
-              <ssl-tls-service-profile>dbb-tls-prof</ssl-tls-service-profile>
+              <ssl-tls-service-profile>{{ vsys_name }}-tls-prof</ssl-tls-service-profile>
               <tunnel-mode>no</tunnel-mode>
             </entry>
           </global-protect-gateway>
