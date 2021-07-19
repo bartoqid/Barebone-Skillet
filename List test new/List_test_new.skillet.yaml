@@ -1,0 +1,48 @@
+name: List test new
+label: List test new
+description: Skillet Generated from 192.168.1.2 using running-config.xml and Candidate
+    Config
+type: panos
+labels:
+    collection: Unknown
+variables: []
+snippets:
+-   name: routing-table-641951
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/network/virtual-router/entry[@name="default"]
+    element: |-
+        <routing-table>
+          <ip>
+            <static-route>
+              <entry name="test">
+                <path-monitor>
+                  <enable>no</enable>
+                  <failure-condition>any</failure-condition>
+                  <hold-time>2</hold-time>
+                </path-monitor>
+                <nexthop>
+                  <ip-address>1.1.1.1</ip-address>
+                </nexthop>
+                <metric>10</metric>
+                <destination>1.1.1.0/24</destination>
+                <route-table>
+                  <unicast/>
+                </route-table>
+              </entry>
+              <entry name="test2">
+                <path-monitor>
+                  <enable>no</enable>
+                  <failure-condition>any</failure-condition>
+                  <hold-time>2</hold-time>
+                </path-monitor>
+                <nexthop>
+                  <ip-address>2.2.2.1</ip-address>
+                </nexthop>
+                <metric>10</metric>
+                <destination>2.2.2.0/24</destination>
+                <route-table>
+                  <unicast/>
+                </route-table>
+              </entry>
+            </static-route>
+          </ip>
+        </routing-table>
