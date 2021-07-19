@@ -43,13 +43,13 @@ variables:
     help_text: ''
 
 -   name: gp_loopback_id
-    description: GP Loopback ID
+    description: External GP Loopback ID
     type_hint: number
     default: ''
     help_text: ''
 
 -   name: gp_loopback_ip
-    description: GP Loopback IP Address
+    description: External GP Loopback IP Address
     type_hint: cidr
     default: ''
     help_text: ''
