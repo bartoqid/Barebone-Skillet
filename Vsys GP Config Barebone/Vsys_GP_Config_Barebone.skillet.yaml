@@ -12,6 +12,12 @@ labels:
 
 variables:
 
+-   name: vsys_name
+    type_hint: text
+    description: VSYS Name
+    default: ''
+    help_text: ''
+
 -   name: gp_loopback_id
     description: GP Loopback ID
     type_hint: number
@@ -30,33 +36,9 @@ variables:
     default: ''
     help_text: ''
 
--   name: gp_gw_name
-    description: GP Gateway Name
-    type_hint: text
-    default: ''
-    help_text: ''
-
 -   name: gw_ip_pool_cidr
     description: Gateway IP Pool CIDR
     type_hint: cidr
-    default: ''
-    help_text: ''
-
--   name: external_gw_name
-    description: External GW Name as shown in GP Client
-    type_hint: text
-    default: ''
-    help_text: ''
-
--   name: external_gw_fqdn
-    description: External Gateway FQDN (Actual GW IP or FQDN)
-    type_hint: text
-    default: ''
-    help_text: ''
-
--   name: gp_portal_name
-    description: GP Portal Name
-    type_hint: text
     default: ''
     help_text: ''
 
@@ -71,7 +53,7 @@ snippets:
 -   name: GP GW Name and Interface
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/tunnel/global-protect-gateway
     element: |-
-        <entry name="{{ gp_gw_name }}">
+        <entry name="{{ vsys_name }}-gateway">
           <local-address>
             <interface>loopback.{{ gp_loopback_id }}</interface>
             <ip>
@@ -87,7 +69,7 @@ snippets:
     element: |-
         <global-protect>
           <global-protect-portal>
-            <entry name="{{ gp_portal_name }}">
+            <entry name="{{ vsys_name }}-portal">
               <portal-config>
                 <local-address>
                   <ip>
@@ -106,7 +88,7 @@ snippets:
                     <password-label>Password</password-label>
                   </entry>
                 </client-auth>
-                <ssl-tls-service-profile>{{ ssl_tls_profile_name }}</ssl-tls-service-profile>
+                <ssl-tls-service-profile>{{ vsys_name}}-tls-profile</ssl-tls-service-profile>
                 <custom-login-page>factory-default</custom-login-page>
                 <custom-home-page>factory-default</custom-home-page>
               </portal-config>
@@ -120,8 +102,8 @@ snippets:
                     <gateways>
                       <external>
                         <list>
-                          <entry name="{{ external_gw_name }}">
-                            <fqdn>{{ external_gw_fqdn }}</fqdn>
+                          <entry name="{{ vsys_name }}-gateway">
+                            <fqdn>{{ vsys_name }}-gateway</fqdn>
                             <priority-rule>
                               <entry name="Any">
                                 <priority>1</priority>
@@ -454,7 +436,7 @@ snippets:
             </entry>
           </global-protect-portal>
           <global-protect-gateway>
-            <entry name="{{ gp_gw_name }}">
+            <entry name="{{ vsys_name }}-gateway">
               <roles>
                 <entry name="default">
                   <login-lifetime>
@@ -508,7 +490,7 @@ snippets:
                   <no-direct-access-to-local-network>no</no-direct-access-to-local-network>
                 </entry>
               </remote-user-tunnel-configs>
-              <ssl-tls-service-profile>{{ ssl_tls_profile_name }}</ssl-tls-service-profile>
+              <ssl-tls-service-profile>{{ vsys_name }}-tls-profile</ssl-tls-service-profile>
               <tunnel-mode>yes</tunnel-mode>
               <remote-user-tunnel>tunnel.{{ tunnel_interface_id }}</remote-user-tunnel>
             </entry>
