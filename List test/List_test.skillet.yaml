@@ -1,9 +1,28 @@
 name: List test
+
 label: Test
-description: "Long form description of the purpose and function of this Skillet.\r\
-    \n"
+
+description: 'Long form description of the purpose and function of this Skillet.
+
+
+
+    '
+
 type: template
+
 labels:
+
     collection: Unknown
-variables: []
-snippets: []
+
+variables:
+
+-   name: new_variable
+    type_hint: list
+    description: Human Readable Label
+    default: default value
+    help_text: ''
+
+snippets:
+
+-   name: list test
+
