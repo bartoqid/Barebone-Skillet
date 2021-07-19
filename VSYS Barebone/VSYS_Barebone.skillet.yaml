@@ -60,6 +60,12 @@ variables:
     default: ''
     help_text: ''
 
+-   name: gp_loopback_comment
+    description: GP Loopback Comment
+    type_hint: text
+    default: ''
+    help_text: ''
+
 -   name: igw_loopback_tag
     description: Internal GW Loopback ID
     type_hint: number
@@ -72,8 +78,8 @@ variables:
     default: ''
     help_text: ''
 
--   name: gp_loopback_comment
-    description: GP Loopback Comment
+-   name: igw_loopback_comment
+    description: iGW Loopback Comment
     type_hint: text
     default: ''
     help_text: ''
@@ -200,7 +206,7 @@ snippets:
           <ip>
             <entry name="{{ igw_loopback_ip }}"/>
           </ip>
-          <comment>{{ gp_loopback_comment }}</comment>
+          <comment>{{ igw_loopback_comment }}</comment>
         </entry>
     cmd: set
 
