@@ -1,11 +1,19 @@
 name: Auth and TLS Profile
+
 label: Auth and TLS Profile
+
 description: Auth and TLS Profile
+
 type: panos
+
 labels:
+
     collection: Unknown
+
 variables: []
+
 snippets:
+
 -   name: entry-675872
     xpath: /config/shared/ssl-tls-service-profile
     element: |-
@@ -16,6 +24,8 @@ snippets:
           </protocol-settings>
           <certificate>GPPA200-CA</certificate>
         </entry>
+    cmd: set
+
 -   name: entry-873779
     xpath: /config/shared/authentication-profile
     element: |-
@@ -30,3 +40,5 @@ snippets:
             <member>all</member>
           </allow-list>
         </entry>
+    cmd: set
+
