@@ -500,7 +500,8 @@ snippets:
 
 -   name: TLS-Profile
     cmd: set
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-wol"]/ssl-tls-service-profile
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-{{
+        vsys_name }}"]/ssl-tls-service-profile
     element: |-
         <entry name="{{ vsys_name }}-tls-profile">
           <protocol-settings>
