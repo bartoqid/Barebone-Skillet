@@ -1,12 +1,19 @@
 name: GP and Internal GW
+
 label: GP and Internal GW
-description: Skillet Generated from 192.168.254.2 using pre-internal-gw-20July and
-    Candidate Config
+
+description: Skillet to generate GP Portal, GW and Internal GW
+
 type: panorama
+
 labels:
+
     collection: Unknown
+
 variables: []
+
 snippets:
+
 -   name: entry-517553
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/tunnel/global-protect-gateway
     element: |-
@@ -32,6 +39,8 @@ snippets:
           <ip-pool/>
           <tunnel-interface>tunnel.5</tunnel-interface>
         </entry>
+    cmd: set
+
 -   name: ssl-tls-service-profile-960641
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
@@ -44,6 +53,8 @@ snippets:
             <certificate>GP-placeholder</certificate>
           </entry>
         </ssl-tls-service-profile>
+    cmd: set
+
 -   name: authentication-profile-307153
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
@@ -60,6 +71,8 @@ snippets:
             </allow-list>
           </entry>
         </authentication-profile>
+    cmd: set
+
 -   name: global-protect-601031
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
@@ -555,3 +568,5 @@ snippets:
             </entry>
           </global-protect-gateway>
         </global-protect>
+    cmd: set
+
