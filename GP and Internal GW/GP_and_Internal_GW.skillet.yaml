@@ -1,8 +1,8 @@
-name: Vsys GP Config Barebone
+name: GP and Internal GW
 
-label: Barebone VSYS GP Config
+label: GP and Internal GW
 
-description: Skillet to configure Globalprotect portal and gateway in vsys via Panorama
+description: Skillet to generate GP Portal, GW and Internal GW
 
 type: panorama
 
@@ -13,19 +13,31 @@ labels:
 variables:
 
 -   name: vsys_name
-    type_hint: text
     description: VSYS Name
+    type_hint: text
     default: ''
     help_text: ''
 
--   name: gp_loopback_id
-    description: GP Loopback ID
+-   name: ext_gp_loopback_id
+    description: External GP Loopback ID
+    type_hint: text
+    default: ''
+    help_text: ''
+
+-   name: ext_gw_loopback_ip
+    description: External GP Loopback IP Address
+    type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: int_loopback_id
+    description: Internal GP Loopback ID
     type_hint: number
     default: ''
     help_text: ''
 
--   name: gp_loopback_ip
-    description: GP Loopback IP
+-   name: int_loopback_ip
+    description: Internal GP Loopback IP Address
     type_hint: cidr
     default: ''
     help_text: ''
@@ -36,30 +48,69 @@ variables:
     default: ''
     help_text: ''
 
--   name: gw_ip_pool_cidr
-    description: Gateway IP Pool CIDR
-    type_hint: cidr
-    default: ''
-    help_text: ''
-
 snippets:
 
--   name: GP GW Name and Interface
+-   name: GP-gateway-config
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/network/tunnel/global-protect-gateway
     element: |-
-        <entry name="{{ vsys_name }}-gateway">
+        <entry name="{{ vsys_name }}-ext-gateway-N">
           <local-address>
-            <interface>loopback.{{ gp_loopback_id }}</interface>
             <ip>
-              <ipv4>{{ gp_loopback_ip }}</ipv4>
+              <ipv4>{{ ext_gw_loopback_ip }}</ipv4>
             </ip>
+            <interface>loopback.{{ ext_gp_loopback_id }}</interface>
+            <ip-address-family>ipv4</ip-address-family>
           </local-address>
+          <client>
+            <exclude-video-traffic>
+              <applications/>
+              <enabled>no</enabled>
+            </exclude-video-traffic>
+          </client>
+          <ipsec>
+            <third-party-client>
+              <enable>no</enable>
+            </third-party-client>
+          </ipsec>
+          <ip-pool/>
           <tunnel-interface>tunnel.{{ tunnel_interface_id }}</tunnel-interface>
         </entry>
     cmd: set
 
--   name: global-protect-portal and gw config
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-wol"]
+-   name: ssl-tls-service-profile
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
+    element: |-
+        <ssl-tls-service-profile>
+          <entry name="{{ vsys_name }}-tls-prof">
+            <protocol-settings>
+              <min-version>tls1-0</min-version>
+              <max-version>max</max-version>
+            </protocol-settings>
+            <certificate>GP-placeholder</certificate>
+          </entry>
+        </ssl-tls-service-profile>
+    cmd: set
+
+-   name: authentication-profile
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
+    element: |-
+        <authentication-profile>
+          <entry name="{{ vsys_name }}-auth-prof">
+            <multi-factor-auth>
+              <mfa-enable>no</mfa-enable>
+            </multi-factor-auth>
+            <method>
+              <local-database/>
+            </method>
+            <allow-list>
+              <member>all</member>
+            </allow-list>
+          </entry>
+        </authentication-profile>
+    cmd: set
+
+-   name: GP-Portal
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
         <global-protect>
           <global-protect-portal>
@@ -67,28 +118,28 @@ snippets:
               <portal-config>
                 <local-address>
                   <ip>
-                    <ipv4>{{ gp_loopback_ip }}</ipv4>
+                    <ipv4>{{ ext_gw_loopback_ip }}</ipv4>
                   </ip>
-                  <interface>loopback.{{ gp_loopback_id }}</interface>
+                  <interface>loopback.{{ ext_gp_loopback_id }}</interface>
                 </local-address>
                 <client-auth>
-                  <entry name="Local-auth-profile">
-                    <authentication-profile>Local-Auth</authentication-profile>
+                  <entry name="client-auth">
                     <user-credential-or-client-cert-required>yes</user-credential-or-client-cert-required>
                     <os>Any</os>
+                    <authentication-profile>{{ vsys_name }}-auth-prof</authentication-profile>
                     <authentication-message>Enter login credentials</authentication-message>
                     <auto-retrieve-passcode>no</auto-retrieve-passcode>
                     <username-label>Username</username-label>
                     <password-label>Password</password-label>
                   </entry>
                 </client-auth>
-                <ssl-tls-service-profile>{{ vsys_name}}-tls-profile</ssl-tls-service-profile>
                 <custom-login-page>factory-default</custom-login-page>
                 <custom-home-page>factory-default</custom-home-page>
+                <ssl-tls-service-profile>{{ vsys_name }}-tls-prof</ssl-tls-service-profile>
               </portal-config>
               <client-config>
                 <configs>
-                  <entry name="client-config">
+                  <entry name="agent-config">
                     <hip-collection>
                       <max-wait-time>20</max-wait-time>
                       <collect-hip-data>yes</collect-hip-data>
@@ -96,8 +147,8 @@ snippets:
                     <gateways>
                       <external>
                         <list>
-                          <entry name="{{ vsys_name }}-gateway">
-                            <fqdn>{{ vsys_name }}-gateway</fqdn>
+                          <entry name="External-Gateway">
+                            <fqdn>external.gateway</fqdn>
                             <priority-rule>
                               <entry name="Any">
                                 <priority>1</priority>
@@ -109,6 +160,9 @@ snippets:
                         <cutoff-time>5</cutoff-time>
                       </external>
                     </gateways>
+                    <authentication-override>
+                      <generate-cookie>no</generate-cookie>
+                    </authentication-override>
                     <source-user>
                       <member>any</member>
                     </source-user>
@@ -123,7 +177,7 @@ snippets:
                       <config>
                         <entry name="connect-method">
                           <value>
-                            <member>on-demand</member>
+                            <member>user-logon</member>
                           </value>
                         </entry>
                         <entry name="refresh-config-interval">
@@ -206,6 +260,11 @@ snippets:
                             <member>yes</member>
                           </value>
                         </entry>
+                        <entry name="traffic-blocking-notification-msg">
+                          <value>
+                            <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Notice&lt;/h1&gt;&lt;p style="margin: 0;font-size: 1{{ tunnel_interface_id }}px; line-height: 1.2em;"&gt;To access the network, you must first connect to GlobalProtect.&lt;/p&gt;&lt;/div&gt;</member>
+                          </value>
+                        </entry>
                         <entry name="allow-traffic-blocking-notification-dismissal">
                           <value>
                             <member>yes</member>
@@ -214,6 +273,11 @@ snippets:
                         <entry name="display-captive-portal-detection-msg">
                           <value>
                             <member>no</member>
+                          </value>
+                        </entry>
+                        <entry name="captive-portal-detection-msg">
+                          <value>
+                            <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Captive Portal Detected&lt;/h1&gt;&lt;p style="margin: 0; font-size: 1{{ tunnel_interface_id }}px; line-height: 1.2em;"&gt;GlobalProtect has temporarily permitted network access for you to connect to the Internet. Follow instructions from your internet provider.&lt;/p&gt;&lt;p style="margin: 0; font-size: 15px; line-height: 1.2em;"&gt;If you let the connection time out, open GlobalProtect and click Connect to try again.&lt;/p&gt;&lt;/div&gt;</member>
                           </value>
                         </entry>
                         <entry name="captive-portal-notification-delay">
@@ -427,10 +491,15 @@ snippets:
                   </entry>
                 </configs>
               </client-config>
+              <satellite-config>
+                <client-certificate>
+                  <local/>
+                </client-certificate>
+              </satellite-config>
             </entry>
           </global-protect-portal>
           <global-protect-gateway>
-            <entry name="{{ vsys_name }}-gateway">
+            <entry name="{{ vsys_name }}-ext-gateway">
               <roles>
                 <entry name="default">
                   <login-lifetime>
@@ -445,9 +514,9 @@ snippets:
                 </entry>
               </roles>
               <client-auth>
-                <entry name="Client-Local">
+                <entry name="client-auth">
                   <os>Any</os>
-                  <authentication-profile>Local-Auth</authentication-profile>
+                  <authentication-profile>{{ vsys_name }}-auth-prof</authentication-profile>
                   <authentication-message>Enter login credentials</authentication-message>
                   <user-credential-or-client-cert-required>yes</user-credential-or-client-cert-required>
                   <auto-retrieve-passcode>no</auto-retrieve-passcode>
@@ -456,27 +525,38 @@ snippets:
                 </entry>
               </client-auth>
               <remote-user-tunnel-configs>
-                <entry name="Default Config">
+                <entry name="client-setting">
                   <split-tunneling>
+                    <include-domains>
+                      <list/>
+                    </include-domains>
+                    <exclude-domains>
+                      <list/>
+                    </exclude-domains>
                     <access-route>
                       <member>0.0.0.0/0</member>
                     </access-route>
+                    <exclude-access-route/>
+                    <include-applications/>
+                    <exclude-applications/>
                   </split-tunneling>
                   <authentication-override>
-                    <accept-cookie>
-                      <cookie-lifetime>
-                        <lifetime-in-hours>24</lifetime-in-hours>
-                      </cookie-lifetime>
-                    </accept-cookie>
-                    <cookie-encrypt-decrypt-cert>GP-placeholder</cookie-encrypt-decrypt-cert>
-                    <generate-cookie>yes</generate-cookie>
+                    <generate-cookie>no</generate-cookie>
                   </authentication-override>
+                  <source-address>
+                    <ip-address/>
+                    <region/>
+                  </source-address>
                   <source-user>
                     <member>any</member>
                   </source-user>
+                  <authentication-server-ip-pool/>
                   <ip-pool>
-                    <member>{{ gw_ip_pool_cidr }}</member>
+                    <member>192.168.200.0/24</member>
                   </ip-pool>
+                  <dns-server>
+                    <member>8.8.8.8</member>
+                  </dns-server>
                   <os>
                     <member>any</member>
                   </os>
@@ -484,40 +564,45 @@ snippets:
                   <no-direct-access-to-local-network>no</no-direct-access-to-local-network>
                 </entry>
               </remote-user-tunnel-configs>
-              <ssl-tls-service-profile>{{ vsys_name }}-tls-profile</ssl-tls-service-profile>
+              <ssl-tls-service-profile>{{ vsys_name }}-tls-prof</ssl-tls-service-profile>
               <tunnel-mode>yes</tunnel-mode>
               <remote-user-tunnel>tunnel.{{ tunnel_interface_id }}</remote-user-tunnel>
+            </entry>
+            <entry name="{{ vsys_name }}-int-gateway">
+              <roles>
+                <entry name="default">
+                  <login-lifetime>
+                    <days>30</days>
+                  </login-lifetime>
+                  <inactivity-logout>
+                    <hours>3</hours>
+                  </inactivity-logout>
+                  <disconnect-on-idle>
+                    <minutes>180</minutes>
+                  </disconnect-on-idle>
+                </entry>
+              </roles>
+              <local-address>
+                <ip>
+                  <ipv4>{{ int_loopback_ip }}</ipv4>
+                </ip>
+                <interface>loopback.{{ int_loopback_id }}</interface>
+              </local-address>
+              <client-auth>
+                <entry name="client-auth">
+                  <os>Any</os>
+                  <authentication-profile>{{ vsys_name }}-auth-prof</authentication-profile>
+                  <authentication-message>Enter login credentials</authentication-message>
+                  <user-credential-or-client-cert-required>yes</user-credential-or-client-cert-required>
+                  <auto-retrieve-passcode>no</auto-retrieve-passcode>
+                  <username-label>Username</username-label>
+                  <password-label>Password</password-label>
+                </entry>
+              </client-auth>
+              <ssl-tls-service-profile>{{ vsys_name }}-tls-prof</ssl-tls-service-profile>
+              <tunnel-mode>no</tunnel-mode>
             </entry>
           </global-protect-gateway>
         </global-protect>
     cmd: set
 
--   name: TLS-Profile
-    cmd: set
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-{{
-        vsys_name }}"]/ssl-tls-service-profile
-    element: |-
-        <entry name="{{ vsys_name }}-tls-profile">
-          <protocol-settings>
-            <min-version>tls1-0</min-version>
-            <max-version>max</max-version>
-          </protocol-settings>
-          <certificate>GP-placeholder</certificate>
-        </entry>
--   name: Auth-profile
-    cmd: set
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/shared
-    element: |-
-        <authentication-profile>
-          <entry name="Local-auth-{{ vsys_name }}">
-            <multi-factor-auth>
-              <mfa-enable>no</mfa-enable>
-            </multi-factor-auth>
-            <method>
-              <local-database/>
-            </method>
-            <allow-list>
-              <member>all</member>
-            </allow-list>
-          </entry>
-        </authentication-profile>
