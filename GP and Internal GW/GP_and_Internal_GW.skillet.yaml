@@ -30,12 +30,6 @@ variables:
     default: ''
     help_text: ''
 
--   name: tunnel_interface_id
-    description: Tunnel Interface ID
-    type_hint: number
-    default: ''
-    help_text: ''
-
 -   name: int_loopback_id
     description: Internal GP Loopback ID
     type_hint: number
@@ -45,6 +39,12 @@ variables:
 -   name: int_loopback_ip
     description: Internal GP Loopback IP Address
     type_hint: cidr
+    default: ''
+    help_text: ''
+
+-   name: tunnel_interface_id
+    description: Tunnel Interface ID
+    type_hint: number
     default: ''
     help_text: ''
 
