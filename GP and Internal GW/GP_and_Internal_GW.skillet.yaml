@@ -19,19 +19,34 @@ variables:
     help_text: ''
 
 -   name: ext_gp_loopback_id
-    description: ext_gp_loopback_id
+    description: External GP Loopback ID
     type_hint: text
     default: ''
+    help_text: ''
 
 -   name: ext_gw_loopback_ip
-    description: ext_gw_loopback_ip
-    type_hint: text
+    description: External GP Loopback IP Address
+    type_hint: cidr
     default: ''
+    help_text: ''
 
 -   name: tunnel_interface_id
-    description: tunnel_interface_id
-    type_hint: text
+    description: Tunnel Interface ID
+    type_hint: number
     default: ''
+    help_text: ''
+
+-   name: int_loopback_id
+    description: Internal GP Loopback ID
+    type_hint: number
+    default: ''
+    help_text: ''
+
+-   name: int_loopback_ip
+    description: Internal GP Loopback IP Address
+    type_hint: cidr
+    default: ''
+    help_text: ''
 
 snippets:
 
@@ -62,7 +77,7 @@ snippets:
         </entry>
     cmd: set
 
--   name: ssl-tls-service-profile-960641
+-   name: ssl-tls-service-profile
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
         <ssl-tls-service-profile>
@@ -76,7 +91,7 @@ snippets:
         </ssl-tls-service-profile>
     cmd: set
 
--   name: authentication-profile-307153
+-   name: authentication-profile
     xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
     element: |-
         <authentication-profile>
@@ -569,9 +584,9 @@ snippets:
               </roles>
               <local-address>
                 <ip>
-                  <ipv4>138.44.18.33/32</ipv4>
+                  <ipv4>{{ int_loopback_ip }}</ipv4>
                 </ip>
-                <interface>loopback.{{ tunnel_interface_id }}1</interface>
+                <interface>loopback.{{ int_loopback_id }}</interface>
               </local-address>
               <client-auth>
                 <entry name="client-auth">
