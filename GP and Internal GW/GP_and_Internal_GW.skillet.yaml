@@ -78,7 +78,8 @@ snippets:
     cmd: set
 
 -   name: ssl-tls-service-profile
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="{{
+        vsys_name }}"]
     element: |-
         <ssl-tls-service-profile>
           <entry name="{{ vsys_name }}-tls-prof">
@@ -92,7 +93,8 @@ snippets:
     cmd: set
 
 -   name: authentication-profile
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="{{
+        vsys_name }}"]
     element: |-
         <authentication-profile>
           <entry name="{{ vsys_name }}-auth-prof">
@@ -110,7 +112,8 @@ snippets:
     cmd: set
 
 -   name: GP-Portal
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys-cenet-dbb"]
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/template/entry[@name="MGMT-TMP"]/config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="{{
+        vsys_name }}"]
     element: |-
         <global-protect>
           <global-protect-portal>
