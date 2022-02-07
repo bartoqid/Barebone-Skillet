@@ -6,6 +6,8 @@ description: |-
 
     Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
 
+
+
     Config
 
 type: panos
@@ -14,14 +16,19 @@ labels:
 
     collection: Unknown
 
-variables: []
+variables:
+
+-   name: tenant_name
+    description: tenant_name
+    type_hint: text
+    default: ''
 
 snippets:
 
 -   name: Sharepoint signature
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
-        <entry name="Sharepoint-upload-rivai-test">
+        <entry name="Sharepoint-upload-{{ tenant_name }}-test">
           <signature>
             <entry name="Uploading">
               <and-condition>
@@ -30,7 +37,7 @@ snippets:
                     <entry name="Or Condition 1">
                       <operator>
                         <pattern-match>
-                          <pattern>rivai-test</pattern>
+                          <pattern>{{ tenant_name }}-test</pattern>
                           <context>http-req-host-header</context>
                         </pattern-match>
                       </operator>
@@ -66,7 +73,7 @@ snippets:
 -   name: entry-879995
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
-        <entry name="Domain365-rivai-test">
+        <entry name="Domain365-{{ tenant_name }}-test">
           <signature>
             <entry name="O365-mydomain-login">
               <and-condition>
@@ -75,7 +82,7 @@ snippets:
                     <entry name="Or Condition 1">
                       <operator>
                         <pattern-match>
-                          <pattern>rivai-test</pattern>
+                          <pattern>{{ tenant_name }}-test</pattern>
                           <context>http-req-host-header</context>
                         </pattern-match>
                       </operator>
@@ -231,7 +238,7 @@ snippets:
 -   name: entry-415756
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
-        <entry name="Allow Arivai Tenant">
+        <entry name="Allow A{{ tenant_name }} Tenant">
           <profile-setting>
             <profiles>
               <virus>
@@ -267,8 +274,8 @@ snippets:
             <member>any</member>
           </category>
           <application>
-            <member>Domain365-rivai-test</member>
-            <member>Sharepoint-upload-rivai-test</member>
+            <member>Domain365-{{ tenant_name }}-test</member>
+            <member>Sharepoint-upload-{{ tenant_name }}-test</member>
           </application>
           <service>
             <member>application-default</member>
