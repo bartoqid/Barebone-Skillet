@@ -1,16 +1,30 @@
 name: O365 App-ID
+
 label: O365 App-ID Tenant
+
 description: Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
+
     Config
+
 type: panos
+
 labels:
+
     collection: Unknown
-variables: []
+
+variables:
+
+-   name: tenant_name
+    description: tenant_name
+    type_hint: text
+    default: ''
+
 snippets:
--   name: entry-822931
+
+-   name: Share-Point-Upload
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
-        <entry name="Sharepoint-upload-rivai-test">
+        <entry name="Sharepoint-upload-{{ tenant_name }}-test">
           <signature>
             <entry name="Uploading">
               <and-condition>
@@ -19,7 +33,7 @@ snippets:
                     <entry name="Or Condition 1">
                       <operator>
                         <pattern-match>
-                          <pattern>rivai-test</pattern>
+                          <pattern>{{ tenant_name }}-test</pattern>
                           <context>http-req-host-header</context>
                         </pattern-match>
                       </operator>
@@ -50,10 +64,12 @@ snippets:
           <able-to-transfer-file>yes</able-to-transfer-file>
           <tunnel-applications>yes</tunnel-applications>
         </entry>
--   name: entry-554816
+    cmd: set
+
+-   name: O365-domain
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
-        <entry name="Domain365-rivai-test">
+        <entry name="Domain365-{{ tenant_name }}-test">
           <signature>
             <entry name="O365-mydomain-login">
               <and-condition>
@@ -62,7 +78,7 @@ snippets:
                     <entry name="Or Condition 1">
                       <operator>
                         <pattern-match>
-                          <pattern>rivai-test</pattern>
+                          <pattern>{{ tenant_name }}-test</pattern>
                           <context>http-req-host-header</context>
                         </pattern-match>
                       </operator>
@@ -82,6 +98,8 @@ snippets:
           <tunnel-applications>yes</tunnel-applications>
           <pervasive-use>yes</pervasive-use>
         </entry>
+    cmd: set
+
 -   name: entry-184063
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -125,6 +143,8 @@ snippets:
           <able-to-transfer-file>yes</able-to-transfer-file>
           <tunnel-applications>yes</tunnel-applications>
         </entry>
+    cmd: set
+
 -   name: entry-444206
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -157,6 +177,8 @@ snippets:
           <tunnel-applications>yes</tunnel-applications>
           <pervasive-use>yes</pervasive-use>
         </entry>
+    cmd: set
+
 -   name: entry-804095
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -207,10 +229,12 @@ snippets:
           </hip-profiles>
           <action>allow</action>
         </entry>
+    cmd: set
+
 -   name: entry-274592
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
-        <entry name="Allow Arivai Tenant">
+        <entry name="Allow A{{ tenant_name }} Tenant">
           <profile-setting>
             <profiles>
               <virus>
@@ -246,8 +270,8 @@ snippets:
             <member>any</member>
           </category>
           <application>
-            <member>Domain365-rivai-test</member>
-            <member>Sharepoint-upload-rivai-test</member>
+            <member>Domain365-{{ tenant_name }}-test</member>
+            <member>Sharepoint-upload-{{ tenant_name }}-test</member>
           </application>
           <service>
             <member>application-default</member>
@@ -257,6 +281,8 @@ snippets:
           </hip-profiles>
           <action>allow</action>
         </entry>
+    cmd: set
+
 -   name: entry-721838
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -290,3 +316,5 @@ snippets:
           </hip-profiles>
           <action>deny</action>
         </entry>
+    cmd: set
+
