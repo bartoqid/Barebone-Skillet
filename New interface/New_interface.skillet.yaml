@@ -1,12 +1,21 @@
 name: New interface
+
 label: Build interface TAP
+
 description: Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
+
     Config
+
 type: panos
+
 labels:
+
     collection: Unknown
+
 variables: []
+
 snippets:
+
 -   name: entry-827201
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -50,6 +59,8 @@ snippets:
           <able-to-transfer-file>yes</able-to-transfer-file>
           <tunnel-applications>yes</tunnel-applications>
         </entry>
+    cmd: set
+
 -   name: entry-879995
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -82,6 +93,8 @@ snippets:
           <tunnel-applications>yes</tunnel-applications>
           <pervasive-use>yes</pervasive-use>
         </entry>
+    cmd: set
+
 -   name: entry-194247
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -125,6 +138,8 @@ snippets:
           <able-to-transfer-file>yes</able-to-transfer-file>
           <tunnel-applications>yes</tunnel-applications>
         </entry>
+    cmd: set
+
 -   name: entry-523889
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -157,6 +172,8 @@ snippets:
           <tunnel-applications>yes</tunnel-applications>
           <pervasive-use>yes</pervasive-use>
         </entry>
+    cmd: set
+
 -   name: entry-550865
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -207,6 +224,8 @@ snippets:
           </hip-profiles>
           <action>allow</action>
         </entry>
+    cmd: set
+
 -   name: entry-415756
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -257,6 +276,8 @@ snippets:
           </hip-profiles>
           <action>allow</action>
         </entry>
+    cmd: set
+
 -   name: entry-316655
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -290,3 +311,5 @@ snippets:
           </hip-profiles>
           <action>deny</action>
         </entry>
+    cmd: set
+
