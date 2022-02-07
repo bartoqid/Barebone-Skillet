@@ -2,7 +2,9 @@ name: New interface
 
 label: Build interface TAP
 
-description: Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
+description: |-
+
+    Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
 
     Config
 
@@ -16,7 +18,7 @@ variables: []
 
 snippets:
 
--   name: entry-827201
+-   name: Sharepoint signature
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
         <entry name="Sharepoint-upload-rivai-test">
