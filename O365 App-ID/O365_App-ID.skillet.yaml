@@ -1,0 +1,84 @@
+name: O365 App-ID
+label: O365 App-ID Tenant
+description: Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
+    Config
+type: panos
+labels:
+    collection: Unknown
+variables: []
+snippets:
+-   name: entry-523529
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
+    element: |-
+        <entry name="Sharepoint-upload-arivai-tenant">
+          <signature>
+            <entry name="Uploading">
+              <and-condition>
+                <entry name="And Condition 1">
+                  <or-condition>
+                    <entry name="Or Condition 1">
+                      <operator>
+                        <pattern-match>
+                          <pattern>arivai-tenant</pattern>
+                          <context>http-req-host-header</context>
+                        </pattern-match>
+                      </operator>
+                    </entry>
+                  </or-condition>
+                </entry>
+                <entry name="And Condition 2">
+                  <or-condition>
+                    <entry name="Or Condition 1">
+                      <operator>
+                        <pattern-match>
+                          <pattern>Scenario\: UploadFile</pattern>
+                          <context>http-req-headers</context>
+                        </pattern-match>
+                      </operator>
+                    </entry>
+                  </or-condition>
+                </entry>
+              </and-condition>
+              <scope>protocol-data-unit</scope>
+              <order-free>yes</order-free>
+            </entry>
+          </signature>
+          <subcategory>auth-service</subcategory>
+          <category>business-systems</category>
+          <technology>browser-based</technology>
+          <risk>1</risk>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <tunnel-applications>yes</tunnel-applications>
+        </entry>
+-   name: entry-216526
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
+    element: |-
+        <entry name="Domain365-arivai-tenant">
+          <signature>
+            <entry name="O365-mydomain-login">
+              <and-condition>
+                <entry name="And Condition 1">
+                  <or-condition>
+                    <entry name="Or Condition 1">
+                      <operator>
+                        <pattern-match>
+                          <pattern>arivai-tenant</pattern>
+                          <context>http-req-host-header</context>
+                        </pattern-match>
+                      </operator>
+                    </entry>
+                  </or-condition>
+                </entry>
+              </and-condition>
+              <scope>protocol-data-unit</scope>
+              <order-free>no</order-free>
+            </entry>
+          </signature>
+          <subcategory>social-business</subcategory>
+          <category>collaboration</category>
+          <technology>browser-based</technology>
+          <risk>1</risk>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <tunnel-applications>yes</tunnel-applications>
+          <pervasive-use>yes</pervasive-use>
+        </entry>
