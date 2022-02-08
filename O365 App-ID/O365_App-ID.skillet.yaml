@@ -1,12 +1,21 @@
 name: O365 App-ID
+
 label: O365 App-ID Tenant
+
 description: Skillet Generated from 192.168.1.240 using running-config.xml and Candidate
+
     Config
+
 type: panos
+
 labels:
+
     collection: Unknown
+
 variables: []
+
 snippets:
+
 -   name: entry-523529
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -50,6 +59,8 @@ snippets:
           <able-to-transfer-file>yes</able-to-transfer-file>
           <tunnel-applications>yes</tunnel-applications>
         </entry>
+    cmd: set
+
 -   name: entry-216526
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
@@ -82,3 +93,5 @@ snippets:
           <tunnel-applications>yes</tunnel-applications>
           <pervasive-use>yes</pervasive-use>
         </entry>
+    cmd: set
+
