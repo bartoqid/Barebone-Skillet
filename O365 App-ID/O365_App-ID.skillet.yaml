@@ -1,15 +1,28 @@
 name: O365 App-ID
+
 label: O365 App-ID Tenant
+
 description: test skillet
+
 type: panos
+
 labels:
+
     collection: Unknown
-variables: []
+
+variables:
+
+-   name: tenant_id
+    description: tenant_id
+    type_hint: text
+    default: ''
+
 snippets:
--   name: entry-944068
+
+-   name: Domain-365
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
-        <entry name="Sharepoint-upload-arivai-tenant">
+        <entry name="Sharepoint-upload-{{ tenant_id }}">
           <signature>
             <entry name="Uploading">
               <and-condition>
@@ -18,7 +31,7 @@ snippets:
                     <entry name="Or Condition 1">
                       <operator>
                         <pattern-match>
-                          <pattern>arivai-tenant</pattern>
+                          <pattern>{{ tenant_id }}</pattern>
                           <context>http-req-host-header</context>
                         </pattern-match>
                       </operator>
@@ -49,10 +62,12 @@ snippets:
           <able-to-transfer-file>yes</able-to-transfer-file>
           <tunnel-applications>yes</tunnel-applications>
         </entry>
--   name: entry-223324
+    cmd: set
+
+-   name: Sharepoint-upload
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/application
     element: |-
-        <entry name="Domain365-arivai-tenant">
+        <entry name="Domain365-{{ tenant_id }}">
           <signature>
             <entry name="O365-mydomain-login">
               <and-condition>
@@ -61,7 +76,7 @@ snippets:
                     <entry name="Or Condition 1">
                       <operator>
                         <pattern-match>
-                          <pattern>arivai-tenant</pattern>
+                          <pattern>{{ tenant_id }}</pattern>
                           <context>http-req-host-header</context>
                         </pattern-match>
                       </operator>
@@ -81,3 +96,5 @@ snippets:
           <tunnel-applications>yes</tunnel-applications>
           <pervasive-use>yes</pervasive-use>
         </entry>
+    cmd: set
+
